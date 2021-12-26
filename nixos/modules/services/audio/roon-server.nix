@@ -30,6 +30,14 @@ in {
           Group to run the Roon Server as.
         '';
       };
+      package = mkOption {
+        type = types.package;
+        default = pkgs.roon-server;
+        defaultText = literalExpression "pkgs.roon-server";
+        description = ''
+          The Roon Server package to use.
+        '';
+      };
     };
   };
 
@@ -42,7 +50,7 @@ in {
       environment.ROON_DATAROOT = "/var/lib/${name}";
 
       serviceConfig = {
-        ExecStart = "${pkgs.roon-server}/bin/RoonServer";
+        ExecStart = "${cfg.package}/bin/RoonServer";
         LimitNOFILE = 8192;
         User = cfg.user;
         Group = cfg.group;
